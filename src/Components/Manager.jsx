@@ -37,7 +37,7 @@ const Manager = () => {
     return (
         <>
             <div className="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
-            <div className="container mx-auto max-w-4xl px-40 py-16">
+            <div className="container mx-auto max-w-5xl px-40 py-16">
                 <div className='font-bold text-4xl text-center text-white'>
                     <span className='text-green-700'>&lt;</span>
                     Pass
@@ -62,16 +62,17 @@ const Manager = () => {
                 </div>
 
                 <div className="passwords">
-                    <h2>Your Passwords</h2>
-                    <table className="table-auto text-white">
-                        <thead>
+                    <h2 className='text-white'>Your Passwords</h2> 
+                    {passwordArray.length===0 && <div>No passwords to show</div>}
+                    {passwordArray.length!==0 && <table className="table-auto text-white w-full overflow-hidden rounded-xl">
+                        <thead className='bg-green-500'>
                             <tr>
                                 <th>Song</th>
                                 <th>Artist</th>
                                 <th>Year</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className='bg-gray-700 text-center'>
                             <tr>
                                 <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
                                 <td>Malcolm Lockyer</td>
@@ -88,7 +89,7 @@ const Manager = () => {
                                 <td>1975</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table>}
                 </div>
             </div>
 

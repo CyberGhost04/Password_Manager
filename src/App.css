@@ -1,0 +1,42 @@
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #585555; 
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #847f7f; 
+    border-radius: 0px;
+    border-top: none;
+    border-bottom: none;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #f8f8f8; 
+  }
+  
+  .invert {
+    filter: invert(1);
+  }
+  
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    outline: none;
+    border: 1px solid #999;
+  }
+  
+  input[type="checkbox"]:checked {
+    background: #999;
+  }
+  
+  

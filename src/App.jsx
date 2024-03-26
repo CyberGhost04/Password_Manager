@@ -12,12 +12,12 @@ function App() {
 
   return (
     <>
-      {/* <div className="min-h-screen bg-cover bg-center" style={{ backgroundImage: `url(${ans + '/icons/wall3.jpg'})` }}>
-      <Glass />
-      </div> */}
 
-      <NavBar />
-      <Manager/> 
+      <div className="min-h-screen bg-cover bg-center" style={{ backgroundImage: `url(${ans + '/icons/wall6.jpg'})` }}>
+        <NavBar />
+        <Glass />
+      </div>
+      {/* <Manager/>  */}
     </>
   )
 }
