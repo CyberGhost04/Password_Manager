@@ -1,9 +1,9 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const Glass = () => {
 
-    const [eye, seteye] = useState("icons/view.svg");
+    const [eye, seteye] = useState("icons/noview.svg");
     const [form, setform] = useState({ site: "", username: "", password: "" })
     const [passwordArray, setpasswordArray] = useState([])
 
@@ -14,20 +14,29 @@ const Glass = () => {
         }
     }, [])
 
+    const passwordRef = useRef()
+
+    const copied = async(text)=>{
+        await navigator.clipboard.writeText(text)
+    }
+
+
 
     const changeicon = () => {
-        if (eye === "icons/view.svg") {
-            seteye("icons/noview.svg");
+        if (eye === "icons/noview.svg") {
+            seteye("icons/view.svg");
+            passwordRef.current.type = "text"
         }
         else {
-            seteye("icons/view.svg");
+            seteye("icons/noview.svg");
+            passwordRef.current.type = "password"
         }
     }
 
     const savepassword = () => {
         setpasswordArray([...passwordArray, form]);
         localStorage.setItem("passwords", JSON.stringify([...passwordArray, form]));
-        console.log([...passwordArray, form])
+        setform({ site: "", username: "", password: "" })
     }
 
     const handlechange = (e) => {
@@ -48,9 +57,9 @@ const Glass = () => {
                             <p className='text-emerald-600 text-center'>Your very own Password Manager</p>
                             <input value={form.site} placeholder='Enter Wbesite URL' className='rounded-full px-4 py-1 border border-wheat-100 w-full' type="text" id='site' name='site' onChange={handlechange} />
                             <div className='flex w-full justify-between gap-4'>
-                                <input value={form.username} placeholder='Enter user ID' className='rounded-full px-4 py-1 border border-wheat-100 w-full' type="text" id='' name='username' onChange={handlechange} />
+                                <input value={form.username} placeholder='Enter user ID' className='rounded-full px-4 py-1 border border-wheat-100 w-full' type="text" id='username' name='username' onChange={handlechange} />
                                 <div className='relative w-full'>
-                                    <input value={form.password} placeholder='Enter Password' className='rounded-full px-4 py-1 border border-wheat-100 w-full' type="text" id='' name='password' onChange={handlechange} />
+                                    <input value={form.password} ref={passwordRef} placeholder='Enter Password' className='rounded-full px-4 py-1 border border-wheat-100 w-full break-all pr-10' type="password" id='password' name='password' onChange={handlechange} />
                                     <span className='absolute right-0 top-[5px] px-2 cursor-pointer' onClick={changeicon}><img src={`${eye}`} alt="" /></span>
                                 </div>
                             </div>
@@ -61,98 +70,40 @@ const Glass = () => {
                                 </lord-icon>
                                 Add Button</button>
                         </div>
-                        <h2 className='text-emerald-600 font-bold flex items-center justify-center my-4'>PASSWORDS</h2>
+                        <h2 className='text-emerald-600 font-bold flex items-center justify-center my-4'>STORED PASSWORDS</h2>
                         <div className="passwords max-h-72 overflow-y-auto">
-                            {passwordArray.length === 0 && <div>No passwords to show</div>}
-                            {passwordArray.length != 0 && <table className="table-auto w-full text-white rounded-l-lg overflow-hidden">
+                            {passwordArray.length === 0 && <div className='text-emerald-600'><center>No passwords stored yet</center></div>}
+                            {passwordArray.length != 0 && <table className="table-auto w-full text-white rounded-lg overflow-hidden">
                                 <thead className='bg-emerald-500'>
                                     <tr>
-                                        <th>Website</th>
-                                        <th>Username</th>
-                                        <th className='pr-4'>Password</th>
+                                        <th className='min-w-32'>Website</th>
+                                        <th className='min-w-32'>Username</th>
+                                        <th className='min-w-32'>Password</th>
                                     </tr>
                                 </thead>
-                                <tbody className='text-black text-center'>
-                                    <tr>
-                                        <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-                                        <td>Malcolm Lockyer</td>
-                                        <td>1961</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Witchy Woman</td>
-                                        <td>The Eagles</td>
-                                        <td>1972</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Shining Star</td>
-                                        <td>Earth, Wind, and Fire</td>
-                                        <td>1975</td>
-                                    </tr>
-                                    <tr>
-                                        <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-                                        <td>Malcolm Lockyer</td>
-                                        <td>1961</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Witchy Woman</td>
-                                        <td>The Eagles</td>
-                                        <td>1972</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Shining Star</td>
-                                        <td>Earth, Wind, and Fire</td>
-                                        <td>1975</td>
-                                    </tr>
-                                    <tr>
-                                        <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-                                        <td>Malcolm Lockyer</td>
-                                        <td>1961</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Witchy Woman</td>
-                                        <td>The Eagles</td>
-                                        <td>1972</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Shining Star</td>
-                                        <td>Earth, Wind, and Fire</td>
-                                        <td>1975</td>
-                                    </tr>
-                                    <tr>
-                                        <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-                                        <td>Malcolm Lockyer</td>
-                                        <td>1961</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Witchy Woman</td>
-                                        <td>The Eagles</td>
-                                        <td>1972</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Shining Star</td>
-                                        <td>Earth, Wind, and Fire</td>
-                                        <td>1975</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Shining Star</td>
-                                        <td>Earth, Wind, and Fire</td>
-                                        <td>1975</td>
-                                    </tr>
-                                    <tr>
-                                        <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-                                        <td>Malcolm Lockyer</td>
-                                        <td>1961</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Witchy Woman</td>
-                                        <td>The Eagles</td>
-                                        <td>1972</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Shining Star</td>
-                                        <td>Earth, Wind, and Fire</td>
-                                        <td>1975</td>
-                                    </tr>
+                                <tbody className='text-black'>
+                                    {passwordArray.map((item, index) => {
+                                        return <tr key={index}>
+                                            <td className='p-2 max-w-[300px] break-all'>
+                                                <div className='flex justify-between'>
+                                                    <div className="txt"><a href={item.site} target='_blank'>{item.site}</a></div>
+                                                    <div className="img cursor-pointer"><img src="icons/copy1.svg" className='min-w-6 min-h-6 mx-2' onClick={()=>{copied(item.site)}} /></div>
+                                                </div>
+                                            </td>
+                                            <td className='max-w-[250px] break-all'>
+                                                <div className='flex justify-between'>
+                                                    <div>{item.username}</div>
+                                                    <div className="img cursor-pointer"><img src="icons/copy1.svg" className='min-w-6 min-h-6 mx-2' onClick={()=>{copied(item.username)}} /></div>
+                                                </div>
+                                            </td>
+                                            <td className='max-w-[250px] break-all'>
+                                                <div className='flex justify-between'>
+                                                    <div>{item.password}</div>
+                                                    <div className="img cursor-pointer"><img src="icons/copy1.svg" className='min-w-6 min-h-6 mx-2' onClick={()=>{copied(item.password)}} /></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    })}
                                 </tbody>
                             </table>}
                         </div>
