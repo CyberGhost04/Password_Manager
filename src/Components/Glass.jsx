@@ -2,11 +2,12 @@ import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { v4 as uuidv4 } from 'uuid';
 
 const Glass = () => {
 
     const [eye, seteye] = useState("icons/noview.svg");
-    const [form, setform] = useState({ site: "", username: "", password: "" })
+    const [form, setform] = useState({ site: "", username: "", password: "", id: uuidv4() })
     const [passwordArray, setpasswordArray] = useState([])
 
     useEffect(() => {
@@ -33,8 +34,6 @@ const Glass = () => {
         await navigator.clipboard.writeText(text)
     }
 
-
-
     const changeicon = () => {
         if (eye === "icons/noview.svg") {
             seteye("icons/view.svg");
@@ -56,6 +55,33 @@ const Glass = () => {
         setform({ ...form, [e.target.name]: e.target.value })
     }
 
+    const delpasswrd = (e, id) => {
+        let newpass = passwordArray.filter((item) => {
+            return item.id != id;
+        })
+        setpasswordArray(newpass)
+        toast.success("Item deleted sccessfully", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+        localStorage.setItem("passwords", JSON.stringify(newpass))
+    }
+
+    const editpasswrd = (e, id) => {
+        setform(passwordArray.filter(item => item.id === id)[0])
+        let newpass = passwordArray.filter((item) => {
+            return item.id != id;
+        })
+        setpasswordArray(newpass)
+        localStorage.setItem("passwords", JSON.stringify(newpass))
+    }
+
     return (
         <>
             <ToastContainer
@@ -68,7 +94,7 @@ const Glass = () => {
                 pauseOnFocusLoss={false}
                 draggable
                 pauseOnHover={false}
-                theme="light"/>
+                theme="light" />
 
             <div className="mt-20 bg-cover bg-center flex items-center justify-center">  {/*this and following division are for glass effect, rest everything is from manager */}
                 <div className="bg-white bg-opacity-5 backdrop-blur-md p-10 rounded-lg shadow-lg">
@@ -104,11 +130,12 @@ const Glass = () => {
                                         <th className='min-w-32'>Website</th>
                                         <th className='min-w-32'>Username</th>
                                         <th className='min-w-32'>Password</th>
+                                        <th className='min-w-20'>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className='text-black'>
-                                    {passwordArray.map((item, index) => {
-                                        return <tr key={index}>
+                                    {passwordArray.map((item) => {
+                                        return <tr key={item.id}>
                                             <td className='p-2 max-w-[300px] break-all'>
                                                 <div className='flex justify-between'>
                                                     <div className="txt"><a href={item.site} target='_blank'>{item.site}</a></div>
@@ -125,6 +152,26 @@ const Glass = () => {
                                                 <div className='flex justify-between'>
                                                     <div>{item.password}</div>
                                                     <div className="img cursor-pointer"><img src="icons/copy1.svg" className='min-w-6 min-h-6 mx-2' onClick={() => { copied(item.password) }} /></div>
+                                                </div>
+                                            </td>
+                                            <td className='max-w-20'>
+                                                <div className='flex justify-around items-center max-w-20'>
+                                                    <div className="icons1" onClick={(e) => { delpasswrd(e, item.id) }}>
+                                                        <lord-icon
+                                                            src="https://cdn.lordicon.com/drxwpfop.json"
+                                                            stroke="bold"
+                                                            trigger="morph"
+                                                            state="morph-trash-in">
+                                                        </lord-icon>
+                                                    </div>
+                                                    <div className="icon2" onClick={(e) => { editpasswrd(e, item.id) }}>
+                                                        <lord-icon
+                                                            src="https://cdn.lordicon.com/wuvorxbv.json"
+                                                            trigger="hover"
+                                                            state="hover-line"
+                                                            stroke="bold">
+                                                        </lord-icon>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
