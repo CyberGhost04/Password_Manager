@@ -16,9 +16,7 @@ export default {
           '100': '#FFFFED', // lightest
           '200': '#FCFBF4', // little darker
           '300': '#E6E3D3', // darker
-          '400':'#E6DDCS', 
-          '500':'',
-          '600':'',
+          '400':'#E6DDCS',
         },
       },
     },

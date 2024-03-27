@@ -1,5 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Glass = () => {
 
@@ -16,7 +18,18 @@ const Glass = () => {
 
     const passwordRef = useRef()
 
-    const copied = async(text)=>{
+    const copied = async (text) => {
+        let value = text + " copied to clipboard"
+        toast.success(value, {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
         await navigator.clipboard.writeText(text)
     }
 
@@ -45,6 +58,18 @@ const Glass = () => {
 
     return (
         <>
+            <ToastContainer
+                position="top-right"
+                autoClose={2500}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover={false}
+                theme="light"/>
+
             <div className="mt-20 bg-cover bg-center flex items-center justify-center">  {/*this and following division are for glass effect, rest everything is from manager */}
                 <div className="bg-white bg-opacity-5 backdrop-blur-md p-10 rounded-lg shadow-lg">
                     <div className="mx-auto max-w-5xl px-20 py-6 max-h-[550px]">
@@ -87,19 +112,19 @@ const Glass = () => {
                                             <td className='p-2 max-w-[300px] break-all'>
                                                 <div className='flex justify-between'>
                                                     <div className="txt"><a href={item.site} target='_blank'>{item.site}</a></div>
-                                                    <div className="img cursor-pointer"><img src="icons/copy1.svg" className='min-w-6 min-h-6 mx-2' onClick={()=>{copied(item.site)}} /></div>
+                                                    <div className="img cursor-pointer"><img src="icons/copy1.svg" className='min-w-6 min-h-6 mx-2' onClick={() => { copied(item.site) }} /></div>
                                                 </div>
                                             </td>
                                             <td className='max-w-[250px] break-all'>
                                                 <div className='flex justify-between'>
                                                     <div>{item.username}</div>
-                                                    <div className="img cursor-pointer"><img src="icons/copy1.svg" className='min-w-6 min-h-6 mx-2' onClick={()=>{copied(item.username)}} /></div>
+                                                    <div className="img cursor-pointer"><img src="icons/copy1.svg" className='min-w-6 min-h-6 mx-2' onClick={() => { copied(item.username) }} /></div>
                                                 </div>
                                             </td>
                                             <td className='max-w-[250px] break-all'>
                                                 <div className='flex justify-between'>
                                                     <div>{item.password}</div>
-                                                    <div className="img cursor-pointer"><img src="icons/copy1.svg" className='min-w-6 min-h-6 mx-2' onClick={()=>{copied(item.password)}} /></div>
+                                                    <div className="img cursor-pointer"><img src="icons/copy1.svg" className='min-w-6 min-h-6 mx-2' onClick={() => { copied(item.password) }} /></div>
                                                 </div>
                                             </td>
                                         </tr>
