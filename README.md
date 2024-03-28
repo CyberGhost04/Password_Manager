@@ -1,13 +1,12 @@
-# React To-Do List Application
+# MERN PassWord Manager App
 
-This is a simple To-Do List application built with React and styled with Tailwind CSS. The application allows users to add, edit, and mark tasks as completed. The task list is stored in the local storage, so the data persists even after the browser is refreshed.
+The Password Manager is a secure and user-friendly application designed to help you organize and manage your passwords effectively. Built with modern web technologies, it ensures that your sensitive information remains safe while providing a seamless user experience.
 
 ## Features
 
-- Add new tasks
-- Edit existing tasks
-- Mark tasks as completed
-- Data persists in local storage
+- Add or Delete Passwords
+- Edit existing Passwords
+- Data persists in Database (Mongo DB)
 
 ## Screenshot
 
@@ -43,6 +42,8 @@ npm start
 
 - React: A JavaScript library for building user interfaces.
 - Tailwind CSS: A utility-first CSS framework for rapidly building custom user interfaces.
+- Express JS
+- Mongo DB
 - uuid: A library to create unique identifiers.
 
 # Contributing
