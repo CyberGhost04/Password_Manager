@@ -12,7 +12,7 @@ const Glass = () => {
 
     const getpasswords = async () => {
         let pwd = await fetch("http://localhost:3000/")
-        let pwrds = await pwd.json() // this is already parsed, check why
+        let pwrds = await pwd.json()
         setpasswordArray(pwrds);
     }
 
