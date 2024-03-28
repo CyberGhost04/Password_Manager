@@ -10,11 +10,14 @@ const Glass = () => {
     const [form, setform] = useState({ site: "", username: "", password: "", id: uuidv4() })
     const [passwordArray, setpasswordArray] = useState([])
 
+    const getpasswords = async()=>{
+        let pwd = await fetch("http://localhost:3000/")
+        let pwrds = await pwd.json() // this is already parsed, check why
+        setpasswordArray(pwrds);
+    }
+
     useEffect(() => {
-        let passwords = localStorage.getItem("passwords");
-        if (passwords) {
-            setpasswordArray(JSON.parse(passwords))
-        }
+        getpasswords();
     }, [])
 
     const passwordRef = useRef()
@@ -45,9 +48,10 @@ const Glass = () => {
         }
     }
 
-    const savepassword = () => {
+    const savepassword = async() => {
         setpasswordArray([...passwordArray, form]);
-        localStorage.setItem("passwords", JSON.stringify([...passwordArray, form]));
+        // localStorage.setItem("passwords", JSON.stringify([...passwordArray, form]));
+        let res = await fetch("http://localhost:3000", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({...form})})
         setform({ site: "", username: "", password: "" })
     }
 
@@ -55,11 +59,12 @@ const Glass = () => {
         setform({ ...form, [e.target.name]: e.target.value })
     }
 
-    const delpasswrd = (e, id) => {
+    const delpasswrd = async(e, id) => {
         let newpass = passwordArray.filter((item) => {
             return item.id != id;
         })
         setpasswordArray(newpass)
+        let res = await fetch("http://localhost:3000", {method:"DELETE", headers:{"Content-Type":"application/json"}, body: JSON.stringify({id})})
         toast.success("Item deleted sccessfully", {
             position: "top-right",
             autoClose: 2500,
@@ -70,16 +75,15 @@ const Glass = () => {
             progress: undefined,
             theme: "light",
         });
-        localStorage.setItem("passwords", JSON.stringify(newpass))
     }
 
-    const editpasswrd = (e, id) => {
+    const editpasswrd = async(e, id) => {
         setform(passwordArray.filter(item => item.id === id)[0])
         let newpass = passwordArray.filter((item) => {
             return item.id != id;
         })
         setpasswordArray(newpass)
-        localStorage.setItem("passwords", JSON.stringify(newpass))
+        let res = await fetch("http://localhost:3000", {method:"DELETE", headers:{"Content-Type":"application/json"}, body: JSON.stringify({id})})
     }
 
     return (
@@ -150,7 +154,7 @@ const Glass = () => {
                                             </td>
                                             <td className='max-w-[250px] break-all'>
                                                 <div className='flex justify-between'>
-                                                    <div>{item.password}</div>
+                                                    <div>{"*".repeat(item.password.length)}</div>
                                                     <div className="img cursor-pointer"><img src="icons/copy1.svg" className='min-w-6 min-h-6 mx-2' onClick={() => { copied(item.password) }} /></div>
                                                 </div>
                                             </td>
