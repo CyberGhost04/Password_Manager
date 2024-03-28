@@ -33,7 +33,7 @@ cd your-repo-name
 3. Install the dependencies: 
 
 ```bash 
-npm install
+npm i
 ```
 4. Start the application: 
 
