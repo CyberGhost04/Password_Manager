@@ -16,8 +16,8 @@ app.use(cors());
 client.connect();
 
 const algorithm = 'aes-256-cbc';
-const key = crypto.randomBytes(32); // Store this key securely
-const iv = crypto.randomBytes(16);  // Store this IV securely
+const key = Buffer.from(process.env.ENCRYPTION_KEY, 'base64');
+const iv = Buffer.from(process.env.ENCRYPTION_IV, 'base64');
 
 // Function to encrypt password
 function encryptPassword(password) {
@@ -42,34 +42,46 @@ function decryptPassword(encrypted) {
 
 // Get all passwords
 app.get('/', async (req, res) => {
-    const db = client.db(dbName);
-    const collection = db.collection('documents');
-    const findResult = await collection.find({}).toArray();
-    const decryptedResult = findResult.map(doc => ({
-        ...doc,
-        password: decryptPassword(doc.password)
-    }));
-    res.json(decryptedResult);
+    try {
+        const db = client.db(dbName);
+        const collection = db.collection('documents');
+        const findResult = await collection.find({}).toArray();
+        const decryptedResult = findResult.map(doc => ({
+            ...doc,
+            password: decryptPassword(doc.password)
+        }));
+        res.json(decryptedResult);
+    } catch (error) {
+        res.status(500).send({ error: 'An error occurred while fetching data.' });
+    }
 });
 
 // Save all passwords
 app.post('/', async (req, res) => {
-    let { site, username, password, id } = req.body;
-    const encryptedPassword = encryptPassword(password);
-    const db = client.db(dbName);
-    const collection = db.collection('documents');
-    const insertResult = await collection.insertOne({ site, username, password: encryptedPassword, id });
-    res.send({ "success": true });
+    try {
+        let { site, username, password, id } = req.body;
+        const encryptedPassword = encryptPassword(password);
+        const db = client.db(dbName);
+        const collection = db.collection('documents');
+        const insertResult = await collection.insertOne({ site, username, password: encryptedPassword, id });
+        res.send({ "success": true });
+    } catch (error) {
+        res.status(500).send({ error: 'An error occurred while saving data.' });
+    }
 });
 
 // Delete password
 app.delete('/', async (req, res) => {
-    let { site, username, password, id } = req.body;
-    const encryptedPassword = encryptPassword(password);
-    const db = client.db(dbName);
-    const collection = db.collection('documents');
-    const deleteResult = await collection.deleteOne({ site, username, password: encryptedPassword, id });
-    res.send({ "success": true });
+    try {
+        let { site, username, password, id } = req.body;
+        const encryptedPassword = encryptPassword(password);
+        const db = client.db(dbName);
+        const collection = db.collection('documents');
+        const deleteResult = await collection.deleteOne({ site, username, password: encryptedPassword, id });
+        res.send({ "success": true });
+    } catch (error) {
+        res.status(500).send({ error: 'An error occurred while deleting data.' });
+    }
 });
 
 app.listen(port, () => {
