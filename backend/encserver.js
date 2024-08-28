@@ -19,6 +19,12 @@ const algorithm = 'aes-256-cbc';
 const key = Buffer.from(process.env.ENCRYPTION_KEY, 'base64');
 const iv = Buffer.from(process.env.ENCRYPTION_IV, 'base64');
 
+const generateRandomNumber = () => {
+    const min = 1000; 
+    const max = 9999; 
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
 // Function to encrypt password
 function encryptPassword(password) {
     let cipher = crypto.createCipheriv(algorithm, key, iv);
@@ -60,6 +66,9 @@ app.get('/', async (req, res) => {
 app.post('/', async (req, res) => {
     try {
         let { site, username, password, id } = req.body;
+        if (id === null || id === undefined) {
+            id = generateRandomNumber();
+        }        
         const encryptedPassword = encryptPassword(password);
         const db = client.db(dbName);
         const collection = db.collection('documents');
@@ -70,33 +79,6 @@ app.post('/', async (req, res) => {
     }
 });
 
-// Delete password
-// app.delete('/', async (req, res) => {
-//     try {
-//         let { site, username, password, id } = req.body;
-//         const encryptedPassword = encryptPassword(password);
-//         const db = client.db(dbName);
-//         const collection = db.collection('documents');
-//         const deleteResult = await collection.deleteOne({ site, username, password: encryptedPassword, id });
-//         res.send({ "success": true });
-//     } catch (error) {
-//         res.status(500).send({ error: 'An error occurred while deleting data.' });
-//     }
-// });
-
-// ########################################################################
-app.put('/', async (req, res) => {
-    const { id, site, username, password } = req.body;
-    const db = client.db(dbName);
-    const collection = db.collection('documents');
-    const updateResult = await collection.updateOne(
-        { id }, // Find the existing record by ID
-        { $set: { site, username, password } } // Update the fields
-    );
-    res.send({ success: true });
-});
-
-// Backend: Delete Password
 app.delete('/', async (req, res) => {
     try {
         const { site, username, id } = req.body; // Exclude password field
@@ -108,10 +90,6 @@ app.delete('/', async (req, res) => {
         res.status(500).send({ error: 'An error occurred while deleting data.' });
     }
 });
-
-
-
-// #########################################################################################
 
 app.listen(port, () => {
     console.log(`Example app listening on port http://localhost:${port}`);

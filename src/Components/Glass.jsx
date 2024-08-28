@@ -6,8 +6,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 const Glass = () => {
 
+    const generateRandomNumber = () => {
+        const min = 1000; 
+        const max = 9999; 
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      };
+      
     const [eye, seteye] = useState("icons/noview.svg");
-    const [form, setform] = useState({ site: "", username: "", password: "", id: uuidv4() })
+    const [form, setform] = useState({ site: "", username: "", password: "", id: generateRandomNumber() })
     const [passwordArray, setpasswordArray] = useState([])
 
     const getpasswords = async () => {
