@@ -71,19 +71,49 @@ app.post('/', async (req, res) => {
 });
 
 // Delete password
+// app.delete('/', async (req, res) => {
+//     try {
+//         let { site, username, password, id } = req.body;
+//         const encryptedPassword = encryptPassword(password);
+//         const db = client.db(dbName);
+//         const collection = db.collection('documents');
+//         const deleteResult = await collection.deleteOne({ site, username, password: encryptedPassword, id });
+//         res.send({ "success": true });
+//     } catch (error) {
+//         res.status(500).send({ error: 'An error occurred while deleting data.' });
+//     }
+// });
+
+// ########################################################################
+app.put('/', async (req, res) => {
+    const { id, site, username, password } = req.body;
+    const db = client.db(dbName);
+    const collection = db.collection('documents');
+    const updateResult = await collection.updateOne(
+        { id }, // Find the existing record by ID
+        { $set: { site, username, password } } // Update the fields
+    );
+    res.send({ success: true });
+});
+
+// Backend: Delete Password
 app.delete('/', async (req, res) => {
     try {
-        let { site, username, password, id } = req.body;
-        const encryptedPassword = encryptPassword(password);
+        const { site, username, id } = req.body; // Exclude password field
         const db = client.db(dbName);
         const collection = db.collection('documents');
-        const deleteResult = await collection.deleteOne({ site, username, password: encryptedPassword, id });
-        res.send({ "success": true });
+        const deleteResult = await collection.deleteOne({ id }); // Compare other fields
+        res.send({ success: true });
     } catch (error) {
         res.status(500).send({ error: 'An error occurred while deleting data.' });
     }
 });
 
+
+
+// #########################################################################################
+
 app.listen(port, () => {
     console.log(`Example app listening on port http://localhost:${port}`);
 });
+

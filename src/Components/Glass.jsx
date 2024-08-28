@@ -120,6 +120,7 @@ const Glass = () => {
         })
         setpasswordArray(newpass)
         let res = await fetch("http://localhost:3000", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) })
+        //setform({ site: "", username: "", password: "" })
     }
 
     return (
